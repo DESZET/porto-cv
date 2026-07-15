@@ -1,0 +1,32 @@
+.headContainer {
+  position: fixed;
+  top: 35%;
+  right: 0;
+  z-index: 100;
+  pointer-events: none;
+  filter: drop-shadow(-4px 4px 12px rgba(0, 0, 0, 0.5));
+  transform: translateY(-50%);
+  animation: float-head 4s ease-in-out infinite alternate;
+}
+
+@keyframes float-head {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(-47%);
+  }
+}
+
+.headSvg {
+  overflow: visible;
+}
+
+.eyesGroup {
+  transition: transform 0.1s ease-out;
+}
+
+.pupil {
+  transform-origin: 45px 58px; /* Approximate vertical eye center */
+  transition: transform 0.08s ease-in-out;
+}

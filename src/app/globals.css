@@ -1,26 +1,258 @@
-@import "tailwindcss";
+/* Design system and animations for Spider-Man Portfolio */
 
+/* Reset & Global styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important; /* Hide default cursor when custom web shooter is loaded */
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  font-family: var(--font-body), sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-red);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* Theme definition */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default: Classic Spidey Theme - Vibrant Spider-Man Red */
+  --bg-primary: #8b1a1a;
+  --bg-secondary: #5c0e0e;
+  --accent-red: #ff2a2a;
+  --accent-blue: #0070f3;
+  --accent-cyan: #00f0ff;
+  --text-primary: #f5f5f7;
+  --text-secondary: #e0c8c8;
+  --glass-bg: rgba(0, 0, 0, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-glow: rgba(255, 42, 42, 0.3);
+  
+  --font-header: 'Bangers', cursive;
+  --font-body: 'Space Grotesk', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="miles"] {
+  --bg-primary: #050508;
+  --bg-secondary: #111116;
+  --accent-red: #ff003c;
+  --accent-blue: #ffd700; /* Yellow highlight graffiti style */
+  --accent-cyan: #00ff66; /* Graffiti green */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a5;
+  --glass-bg: rgba(255, 0, 60, 0.02);
+  --glass-border: rgba(255, 0, 60, 0.12);
+  --glass-glow: rgba(255, 0, 60, 0.2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+[data-theme="gwen"] {
+  --bg-primary: #0a060e;
+  --bg-secondary: #171021;
+  --accent-red: #ff7ebb; /* Hot Pink */
+  --accent-blue: #00e5ff; /* Cyan webs */
+  --accent-cyan: #ffffff;
+  --text-primary: #fce7f3;
+  --text-secondary: #cbd5e1;
+  --glass-bg: rgba(255, 126, 187, 0.03);
+  --glass-border: rgba(255, 126, 187, 0.15);
+  --glass-glow: rgba(0, 229, 255, 0.2);
+}
+
+[data-theme="2099"] {
+  --bg-primary: #02020f;
+  --bg-secondary: #080825;
+  --accent-red: #ff0055;
+  --accent-blue: #0033ff;
+  --accent-cyan: #00ffff;
+  --text-primary: #00ffff;
+  --text-secondary: #7070ff;
+  --glass-bg: rgba(0, 255, 255, 0.02);
+  --glass-border: rgba(0, 255, 255, 0.15);
+  --glass-glow: rgba(255, 0, 85, 0.35);
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glass-panel:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 20px var(--glass-glow);
+}
+
+/* Comic Book Panels and Texts */
+.comic-panel {
+  border: 3px solid #000;
+  background: var(--bg-secondary);
+  box-shadow: 6px 6px 0px #000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.comic-panel:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #000;
+}
+
+.comic-title {
+  font-family: var(--font-header), cursive;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+  text-shadow: 2px 2px 0px #000;
+  -webkit-text-stroke: 1px #000;
+}
+
+/* Comic Popups */
+.comic-popup {
+  position: absolute;
+  pointer-events: none;
+  font-family: var(--font-header), cursive;
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 4px 4px 0px #000;
+  -webkit-text-stroke: 2px #000;
+  text-transform: uppercase;
+  z-index: 100;
+  animation: comic-boom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Spider-Sense screen warnings */
+.spider-sense-active {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border: 8px solid transparent;
+  animation: spider-sense-glow 0.4s ease-in-out infinite alternate;
+}
+
+/* Keyframes animations */
+@keyframes comic-boom {
+  0% {
+    transform: scale(0.1) rotate(-20deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(15deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.0) rotate(5deg);
+    opacity: 0.9;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes spider-sense-glow {
+  0% {
+    border-color: rgba(255, 215, 0, 0.2);
+    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.15);
+  }
+  100% {
+    border-color: rgba(255, 42, 42, 0.6);
+    box-shadow: inset 0 0 40px rgba(255, 42, 42, 0.45);
+  }
+}
+
+/* Glitch effects */
+.glitch-text {
+  position: relative;
+  animation: text-glitch 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-primary);
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--accent-cyan);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--accent-red);
+  clip: rect(85px, 450px, 140px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(15px, 9999px, 66px, 0); }
+  100% { clip: rect(34px, 9999px, 55px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(70px, 9999px, 105px, 0); }
+  100% { clip: rect(12px, 9999px, 85px, 0); }
+}
+
+/* Half-tone comic dot background */
+.halftone-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 16px 16px;
+}
+
+/* Sound indicator waves */
+.sound-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.sound-bar {
+  width: 3px;
+  height: 4px;
+  background-color: var(--accent-red);
+  border-radius: 2px;
+}
+
+.sound-bar-active {
+  animation: bounce-bar 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes bounce-bar {
+  0% { height: 4px; }
+  100% { height: 16px; }
 }
