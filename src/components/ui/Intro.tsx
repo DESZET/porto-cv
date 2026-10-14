@@ -55,7 +55,25 @@ export const Intro: React.FC = () => {
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
-  }, [introActive, playSFX]);
+   }, [introActive, playSFX]);
+
+  const handleMenuClick = (id: string) => {
+    playSFX("whoosh");
+    setIsEntering(true);
+
+    setTimeout(() => {
+      setIntroActive(false);
+      // Scroll to section if not "start"
+      if (id !== "start") {
+        setTimeout(() => {
+          const section = document.getElementById(id);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 200);
+      }
+    }, 1200);
+  };
 
   // Keyboard navigation for game-like feel
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -79,24 +97,6 @@ export const Intro: React.FC = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
-
-  const handleMenuClick = (id: string) => {
-    playSFX("whoosh");
-    setIsEntering(true);
-
-    setTimeout(() => {
-      setIntroActive(false);
-      // Scroll to section if not "start"
-      if (id !== "start") {
-        setTimeout(() => {
-          const section = document.getElementById(id);
-          if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 200);
-      }
-    }, 1200);
-  };
 
   const getThemeAccent = () => {
     switch (theme) {

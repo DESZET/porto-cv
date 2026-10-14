@@ -130,9 +130,9 @@ export const GameHub: React.FC = () => {
   // --- DEDICATED SCORE SYNC TO APP CONTEXT ---
   useEffect(() => {
     if (activeGame && gameStarted) {
-      updateScore(activeGame as string, currentScore);
+      updateScore(activeGame as keyof typeof scores, currentScore);
     }
-  }, [currentScore, activeGame, gameStarted, updateScore]);
+  }, [currentScore, activeGame, gameStarted, updateScore, scores]);
 
   // --- VENOM TAP ATTACK ---
   const attackVenom = () => {
