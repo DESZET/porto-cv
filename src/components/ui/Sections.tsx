@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { useApp, SpideyTheme } from "@/context/AppContext";
+import { useApp } from "@/context/AppContext";
 import {
   Mail,
   Terminal,
@@ -15,7 +16,6 @@ import {
   Award,
   BookOpen,
   Briefcase,
-  Play,
   Volume2,
   VolumeX,
 } from "lucide-react";
@@ -119,36 +119,6 @@ const TIMELINE_NODES = [
   },
 ];
 
-const letterVariants = {
-  initial: { y: -80, opacity: 0, rotate: -20 },
-  animate: (custom: number) => ({
-    y: 0,
-    opacity: 1,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      damping: 12,
-      stiffness: 100,
-      delay: custom * 0.04,
-    },
-  }),
-  hover: {
-    scale: 1.15,
-    y: -8,
-    rotate: [0, -5, 5, 0],
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 10,
-      rotate: {
-        type: "tween",
-        duration: 0.35,
-        ease: "easeInOut",
-      },
-    },
-  },
-};
-
 export const Sections: React.FC = () => {
   const {
     theme,
@@ -161,7 +131,6 @@ export const Sections: React.FC = () => {
   } = useApp();
 
   // Hero Section Redesign states and handlers
-  const [isSenseActive, setIsSenseActive] = useState(false);
   const [sonarLetter, setSonarLetter] = useState<number | null>(null);
   const lastSoundTime = useRef(0);
   const handleLetterHover = (idx: number) => {
@@ -202,10 +171,6 @@ export const Sections: React.FC = () => {
 
   // Projects Modal & Selected Project
   const [zoomedProject, setZoomedProject] = useState<typeof PROJECTS[0] | null>(null);
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-
-  // Easter Egg Tracker
-  const [eePrompt, setEePrompt] = useState(false);
 
   const toggleSound = () => {
     setSoundEnabled(!soundEnabled);
@@ -226,16 +191,6 @@ export const Sections: React.FC = () => {
     setZoomedProject(null);
   };
 
-  const handleNextProject = () => {
-    playSFX("whoosh");
-    setCurrentProjectIndex((prev) => (prev + 1) % PROJECTS.length);
-  };
-
-  const handlePrevProject = () => {
-    playSFX("whoosh");
-    setCurrentProjectIndex((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
-  };
-
   // Convert theme text for UI display
   const getThemeDisplayName = () => {
     switch (theme) {
@@ -253,11 +208,13 @@ export const Sections: React.FC = () => {
         <div className={styles.swingContainer}>
           <div className={styles.swingPendulum}>
             <div className={styles.swingWebTrail} />
-            <img
+            <Image
               src="/spiderman-wing.png"
               alt="Spider-Man Swinging"
               className={styles.swingSpiderman}
               draggable={false}
+              width={100}
+              height={100}
             />
           </div>
         </div>
@@ -274,11 +231,13 @@ export const Sections: React.FC = () => {
           style={{ cursor: 'grab', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         >
           <div className={styles.hangingWebRope} />
-          <img
+          <Image
             src="/spiderman-gelantung.png"
             alt="Hanging Spider-Man"
             className={styles.hangingSpidey}
             draggable={false}
+            width={100}
+            height={150}
           />
         </motion.div>
       </div>
@@ -402,7 +361,7 @@ export const Sections: React.FC = () => {
 
           {/* CENTER: Spider-Man Image */}
           <div className={styles.dribbbleCenter}>
-            <img src="/spiderman-hero.png" alt="Spider-Man" className={styles.dribbbleSpidey} draggable={false} />
+            <Image src="/spiderman-hero.png" alt="Spider-Man" className={styles.dribbbleSpidey} draggable={false} width={150} height={200} />
           </div>
 
           {/* RIGHT: Traits */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { useApp } from "@/context/AppContext";
 import styles from "./Intro.module.css";
 
@@ -72,7 +73,7 @@ export const Intro: React.FC = () => {
       e.preventDefault();
       handleMenuClick(MENU_ITEMS[selectedIndex].id);
     }
-  }, [introActive, showMenu, isEntering, selectedIndex, playSFX]);
+  }, [introActive, showMenu, isEntering, selectedIndex, playSFX, handleMenuClick]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -117,11 +118,13 @@ export const Intro: React.FC = () => {
         <div className={styles.swingContainer}>
           <div className={styles.swingPendulum}>
             <div className={styles.swingWebTrail} />
-            <img
+            <Image
               src="/spiderman-wing.png"
               alt="Spider-Man Swinging"
               className={styles.swingSpiderman}
               draggable={false}
+              width={100}
+              height={100}
             />
           </div>
         </div>
@@ -247,11 +250,13 @@ export const Intro: React.FC = () => {
             <div className={styles.heroGlow} style={{ background: `radial-gradient(circle, ${accent}40 0%, transparent 70%)` }} />
             
             {/* Spider-Man Image */}
-            <img
+            <Image
               src="/spiderman-hero.png"
               alt="Spider-Man Hero"
               className={styles.heroImage}
               draggable={false}
+              width={300}
+              height={400}
             />
 
             {/* Spider logo watermark */}

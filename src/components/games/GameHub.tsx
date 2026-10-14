@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useApp } from "@/context/AppContext";
-import { X, Award, ShieldAlert, Heart, Zap, RefreshCw } from "lucide-react";
+import { X, Award, Heart, RefreshCw } from "lucide-react";
 import styles from "./GameHub.module.css";
 
 interface Sprite {
@@ -130,7 +130,7 @@ export const GameHub: React.FC = () => {
   // --- DEDICATED SCORE SYNC TO APP CONTEXT ---
   useEffect(() => {
     if (activeGame && gameStarted) {
-      updateScore(activeGame as any, currentScore);
+      updateScore(activeGame as string, currentScore);
     }
   }, [currentScore, activeGame, gameStarted, updateScore]);
 
